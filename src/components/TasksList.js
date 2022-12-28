@@ -4,10 +4,11 @@ import TaskCard from "./TaskCard";
 
 function TasksList({ done = false }) {
   const { loading, getTasks, tasks } = useTasks();
+  console.log(tasks);
 
   useEffect(() => {
     getTasks(done);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [done]);
 
   function renderTasks() {

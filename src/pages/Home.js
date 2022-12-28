@@ -9,9 +9,7 @@ function Home() {
   const [showTasksDone, setShowTasksDone] = useState(false);
 
   useEffect(() => {
-    if (!supabase.auth.user()) {
-      navigate("/login");
-    }
+    !supabase.auth.user() && navigate("/login");
   }, [navigate]);
 
   return (
@@ -28,7 +26,7 @@ function Home() {
           </button>
         </header>
 
-        <TasksList done={showTasksDone} />
+        {supabase.auth.user() && <TasksList done={showTasksDone} />}
       </div>
     </div>
   );
