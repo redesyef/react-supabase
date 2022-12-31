@@ -3,14 +3,15 @@ import { useNavigate } from "react-router-dom";
 import TaskForm from "../components/TaskForm";
 import TasksList from "../components/TasksList";
 import { supabase } from "../supabase/client";
-
+import { useTasks } from "../context/TaskContext";
 function Home() {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
+  //const { user } = useTasks();
   const [showTasksDone, setShowTasksDone] = useState(false);
 
-  useEffect(() => {
-    !supabase.auth.user() && navigate("/login");
-  }, [navigate]);
+  // useEffect(() => {
+  //   !user && navigate("/login");
+  // }, [navigate, user]);
 
   return (
     <div className="row pt-4">

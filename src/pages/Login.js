@@ -6,19 +6,20 @@ import { useNavigate } from "react-router-dom";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { loading, loginWithMagicLink } = useTasks();
-  const navigate = useNavigate();
+  const { loading, loginWithMagicLink, user } = useTasks();
 
+  const navigate = useNavigate();
+  console.log(user);
   const handleSubmit = (e) => {
     e.preventDefault();
     loginWithMagicLink(email, password);
   };
 
   useEffect(() => {
-    if (supabase.auth.user()) {
+    if (user) {
       navigate("/");
     }
-  }, [navigate]);
+  }, [navigate, user]);
 
   return (
     <div className="row p-4">

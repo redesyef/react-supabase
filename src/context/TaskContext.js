@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+
 import { supabase } from "../supabase/client";
 
 export const TaskContext = createContext();
@@ -15,6 +16,8 @@ export const TaskContextProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [adding, setAdding] = useState(false);
+  const [session, setSession] = useState(null);
+  const [user, setUser] = useState(null);
 
   const loginWithMagicLink = async (email, password) => {
     setLoading(true);
@@ -29,6 +32,7 @@ export const TaskContextProvider = ({ children }) => {
       setLoading(false);
     }
   };
+
   const register = async (email, password) => {
     setLoading(true);
     try {
@@ -143,6 +147,18 @@ export const TaskContextProvider = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    //supabase.auth.session();
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+  }, [session]);
+  useEffect(() => {
+    const user = supabase.auth.session();
+    setUser(user);
+  }, [session]);
+
   return (
     <TaskContext.Provider
       value={{
@@ -156,6 +172,8 @@ export const TaskContextProvider = ({ children }) => {
         loginWithMagicLink,
         logout,
         register,
+        session,
+        user,
       }}
     >
       {children}
