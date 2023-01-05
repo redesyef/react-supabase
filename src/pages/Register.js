@@ -14,12 +14,12 @@ function Register() {
     register(email, password);
   };
 
-  useEffect(() => {
-    if (supabase.auth.user()) {
-      navigate("/");
-    }
-    console.log("called");
-  }, [navigate]);
+  // useEffect(() => {
+  //   if (supabase.auth.user()) {
+  //     navigate("/");
+  //   }
+  //   console.log("called");
+  // }, [navigate]);
 
   return (
     <div className="row p-4">

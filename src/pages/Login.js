@@ -15,11 +15,11 @@ function Login() {
     loginWithMagicLink(email, password);
   };
 
-  useEffect(() => {
-    if (user) {
-      navigate("/");
-    }
-  }, [navigate, user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     navigate("/");
+  //   }
+  // }, [navigate, user]);
 
   return (
     <div className="row p-4">
