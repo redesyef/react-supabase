@@ -4,7 +4,6 @@ import TaskCard from "./TaskCard";
 
 function TasksList({ done = false }) {
   const { loading, getTasks, tasks } = useTasks();
-  console.log(tasks);
 
   useEffect(() => {
     getTasks(done);

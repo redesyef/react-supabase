@@ -22,7 +22,10 @@ export const TaskContextProvider = ({ children }) => {
   const loginWithMagicLink = async (email, password) => {
     setLoading(true);
     try {
-      const { error } = await supabase.auth.signIn({ email, password });
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
       if (error) {
         throw error;
       }
@@ -62,32 +65,12 @@ export const TaskContextProvider = ({ children }) => {
     }
   };
 
-  const createTask = async (taskName) => {
-    setAdding(true);
-    try {
-      const user = supabase.auth.user();
-
-      const { error, data } = await supabase.from("tasks").insert({
-        name: taskName,
-        userId: user.id,
-      });
-
-      setTasks([...tasks, ...data]);
-
-      if (error) {
-        throw error;
-      }
-    } catch (error) {
-      alert(error.error_description || error.message);
-    } finally {
-      setAdding(false);
-    }
-  };
-
   const getTasks = async (done = false) => {
     setLoading(true);
 
-    const user = supabase.auth.user();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     try {
       const { error, data } = await supabase
@@ -109,12 +92,43 @@ export const TaskContextProvider = ({ children }) => {
     }
   };
 
+  const createTask = async (taskName) => {
+    setAdding(true);
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      //const user = supabase.auth.user();
+
+      const { error, data } = await supabase
+        .from("tasks")
+        .insert({
+          name: taskName,
+          userId: user.id,
+        })
+        .select();
+
+      setTasks([...tasks, ...data]);
+
+      if (error) {
+        throw error;
+      }
+    } catch (error) {
+      alert(error.error_description || error.message);
+    } finally {
+      setAdding(false);
+    }
+  };
   const updateTasks = async (id, updatedFields) => {
     try {
-      const user = supabase.auth.user();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       const { error, data } = await supabase
         .from("tasks")
         .update(updatedFields)
+        .select()
         .eq("userId", user.id)
         .eq("id", id);
       if (error) {
@@ -129,11 +143,14 @@ export const TaskContextProvider = ({ children }) => {
 
   const deleteTask = async (id) => {
     try {
-      const user = supabase.auth.user();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
       const { error, data } = await supabase
         .from("tasks")
         .delete()
+        .select()
         .eq("userId", user.id)
         .eq("id", id);
 
@@ -148,15 +165,18 @@ export const TaskContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    //supabase.auth.session();
-
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
   }, [session]);
-  useEffect(() => {
-    const user = supabase.auth.session();
+  const valideUser = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     setUser(user);
+  };
+  useEffect(() => {
+    valideUser();
   }, [session]);
 
   return (

@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { useTasks } from "../context/TaskContext";
-
 import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { loading, loginWithMagicLink, user } = useTasks();
+  const { loading, loginWithMagicLink } = useTasks();
 
   const navigate = useNavigate();
-  console.log(user);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     loginWithMagicLink(email, password);
