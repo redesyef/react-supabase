@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTasks } from "../context/TaskContext";
-import { supabase } from "../supabase/client";
+
 import { useNavigate } from "react-router-dom";
 
 function Register() {
@@ -13,13 +13,6 @@ function Register() {
     e.preventDefault();
     register(email, password);
   };
-
-  // useEffect(() => {
-  //   if (supabase.auth.user()) {
-  //     navigate("/");
-  //   }
-  //   console.log("called");
-  // }, [navigate]);
 
   return (
     <div className="row p-4">

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTasks } from "../context/TaskContext";
-import { supabase } from "../supabase/client";
+
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -14,12 +14,6 @@ function Login() {
     e.preventDefault();
     loginWithMagicLink(email, password);
   };
-
-  // useEffect(() => {
-  //   if (user) {
-  //     navigate("/");
-  //   }
-  // }, [navigate, user]);
 
   return (
     <div className="row p-4">

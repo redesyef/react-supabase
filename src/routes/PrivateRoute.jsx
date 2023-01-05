@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useTasks } from "../context/TaskContext";
@@ -9,12 +10,15 @@ export const PrivateRoute = ({
 }) => {
   const { session, user } = useTasks();
   const navigate = useNavigate();
-  useEffect(() => {
+  const valideSession = () => {
     if (!session) {
       navigate("/login");
     } else {
       navigate("/");
     }
+  };
+  useEffect(() => {
+    valideSession();
   }, [user]);
   if (!isAllowed) {
     return <Navigate to={redirectTo} replace />;
